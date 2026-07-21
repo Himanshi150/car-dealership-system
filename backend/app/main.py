@@ -1,0 +1,80 @@
+from fastapi import FastAPI, Depends, HTTPException, Query
+from sqlalchemy.orm import Session
+from . import models, schemas, crud, security
+from .database import engine, get_db
+
+models.Base.metadata.create_all(bind=engine)
+app = FastAPI()
+
+# Auth Endpoints
+@app.post("/api/auth/register", response_model=schemas.UserOut)
+def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    existing = crud.get_user_by_email(db, user.email)
+    if existing:
+        raise HTTPException(400, "Email already registered")
+    return crud.create_user(db, user)
+
+@app.post("/api/auth/login")
+def login(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_email(db, user.email)
+    if not db_user or not security.verify_password(user.password, db_user.hashed_password):
+        raise HTTPException(401, "Invalid credentials")
+    token = security.create_access_token({"sub": db_user.email})
+    return {"access_token": token, "token_type": "bearer"}
+
+# Vehicle Endpoints
+@app.post("/api/vehicles", response_model=schemas.VehicleOut)
+def create_vehicle(vehicle: schemas.VehicleCreate, db: Session = Depends(get_db)):
+    return crud.create_vehicle(db, vehicle)
+
+@app.get("/api/vehicles", response_model=list[schemas.VehicleOut])
+def get_all_vehicles(db: Session = Depends(get_db)):
+    return crud.get_all_vehicles(db)
+
+@app.get("/api/vehicles/search", response_model=list[schemas.VehicleOut])
+def search_vehicles(
+    make: str = Query(None),
+    model: str = Query(None),
+    category: str = Query(None),
+    min_price: float = Query(None),
+    max_price: float = Query(None),
+    db: Session = Depends(get_db)
+):
+    return crud.search_vehicles(db, make, model, category, min_price, max_price)
+
+@app.get("/api/vehicles/{vehicle_id}", response_model=schemas.VehicleOut)
+def get_vehicle(vehicle_id: int, db: Session = Depends(get_db)):
+    vehicle = crud.get_vehicle(db, vehicle_id)
+    if not vehicle:
+        raise HTTPException(404, "Vehicle not found")
+    return vehicle
+
+@app.put("/api/vehicles/{vehicle_id}", response_model=schemas.VehicleOut)
+def update_vehicle(vehicle_id: int, vehicle: schemas.VehicleCreate, db: Session = Depends(get_db)):
+    updated = crud.update_vehicle(db, vehicle_id, vehicle)
+    if not updated:
+        raise HTTPException(404, "Vehicle not found")
+    return updated
+
+@app.delete("/api/vehicles/{vehicle_id}")
+def delete_vehicle(vehicle_id: int, db: Session = Depends(get_db)):
+    deleted = crud.delete_vehicle(db, vehicle_id)
+    if not deleted:
+        raise HTTPException(404, "Vehicle not found")
+    return {"message": "Vehicle deleted"}
+
+@app.post("/api/vehicles/{vehicle_id}/purchase", response_model=schemas.VehicleOut)
+def purchase_vehicle(vehicle_id: int, purchase: schemas.PurchaseRequest, db: Session = Depends(get_db)):
+    vehicle = crud.get_vehicle(db, vehicle_id)
+    if not vehicle:
+        raise HTTPException(404, "Vehicle not found")
+    if vehicle.quantity < purchase.quantity:
+        raise HTTPException(400, "Not enough vehicles in stock")
+    return crud.purchase_vehicle(db, vehicle_id, purchase.quantity)
+
+@app.post("/api/vehicles/{vehicle_id}/restock", response_model=schemas.VehicleOut)
+def restock_vehicle(vehicle_id: int, restock: schemas.PurchaseRequest, db: Session = Depends(get_db)):
+    vehicle = crud.get_vehicle(db, vehicle_id)
+    if not vehicle:
+        raise HTTPException(404, "Vehicle not found")
+    return crud.restock_vehicle(db, vehicle_id, restock.quantity)
