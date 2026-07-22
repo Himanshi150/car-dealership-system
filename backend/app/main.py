@@ -30,7 +30,7 @@ def login(user: schemas.UserCreate, db: Session = Depends(get_db)):
     if not db_user or not security.verify_password(user.password, db_user.hashed_password):
         raise HTTPException(401, "Invalid credentials")
     token = security.create_access_token({"sub": db_user.email})
-    return {"access_token": token, "token_type": "bearer"}
+    return {"access_token": token, "token_type": "bearer", "is_admin": db_user.is_admin}
 
 # Vehicle Endpoints (all protected - require a logged-in user)
 @app.post("/api/vehicles", response_model=schemas.VehicleOut)

@@ -1,7 +1,7 @@
 import React from 'react';
 import VehicleCard from './VehicleCard';
 
-export default function VehicleList({ vehicles, onPurchase, onRestock, onDelete }) {
+export default function VehicleList({ vehicles, onPurchase, onRestock, onDelete, isAdmin }) {
   if (vehicles.length === 0) {
     return (
       <div className="text-center py-12">
@@ -19,6 +19,7 @@ export default function VehicleList({ vehicles, onPurchase, onRestock, onDelete 
           onPurchase={onPurchase}
           onRestock={onRestock}
           onDelete={onDelete}
+          isAdmin={isAdmin}
         />
       ))}
     </div>

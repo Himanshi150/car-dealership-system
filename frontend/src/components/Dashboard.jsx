@@ -4,6 +4,7 @@ import VehicleList from './VehicleList';
 import AddVehicleForm from './AddVehicleForm';
 
 export default function Dashboard({ onLogout }) {
+  const isAdmin = localStorage.getItem('is_admin') === 'true';
   const [vehicles, setVehicles] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
@@ -84,10 +85,17 @@ export default function Dashboard({ onLogout }) {
     <div className="min-h-screen bg-neutral-50">
       <nav className="bg-white text-neutral-900 p-4 border-b border-neutral-200">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Car Dealership System</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold">Car Dealership System</h1>
+            <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
+              isAdmin ? 'bg-neutral-900 text-white' : 'bg-neutral-200 text-neutral-700'
+            }`}>
+              {isAdmin ? 'Admin' : 'User'}
+            </span>
+          </div>
           <button
             onClick={onLogout}
-            className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-semibold"
+            className="border border-neutral-300 text-neutral-900 hover:bg-neutral-100 px-4 py-2 rounded-lg font-semibold"
           >
             Logout
           </button>
@@ -109,7 +117,7 @@ export default function Dashboard({ onLogout }) {
               placeholder="Search by make..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-800"
             />
           </form>
           {searchTerm && (
@@ -120,12 +128,14 @@ export default function Dashboard({ onLogout }) {
               Clear Search
             </button>
           )}
-          <button
-            onClick={() => setShowAddForm(!showAddForm)}
-            className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 font-semibold"
-          >
-            {showAddForm ? 'Cancel' : '+ Add Vehicle'}
-          </button>
+          {isAdmin && (
+            <button
+              onClick={() => setShowAddForm(!showAddForm)}
+              className="bg-neutral-700 text-white px-6 py-2 rounded-lg hover:bg-neutral-800 font-semibold"
+            >
+              {showAddForm ? 'Cancel' : '+ Add Vehicle'}
+            </button>
+          )}
         </div>
 
         {showAddForm && (
@@ -144,6 +154,7 @@ export default function Dashboard({ onLogout }) {
             onPurchase={handlePurchase}
             onRestock={handleRestock}
             onDelete={handleDelete}
+            isAdmin={isAdmin}
           />
         )}
       </div>

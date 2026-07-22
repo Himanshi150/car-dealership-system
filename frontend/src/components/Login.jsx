@@ -15,6 +15,7 @@ export default function Login({ onLoginSuccess }) {
     try {
       const response = await authAPI.login(email, password);
       localStorage.setItem('token', response.data.access_token);
+      localStorage.setItem('is_admin', response.data.is_admin);
       onLoginSuccess();
     } catch (err) {
       setError(err.response?.data?.detail || 'Login failed');
@@ -55,7 +56,7 @@ export default function Login({ onLoginSuccess }) {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400"
+          className="w-full bg-neutral-700 text-white py-2 rounded-lg font-semibold hover:bg-neutral-800 disabled:bg-gray-400"
         >
           {loading ? 'Logging in...' : 'Login'}
         </button>

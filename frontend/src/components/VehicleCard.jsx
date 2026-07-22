@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function VehicleCard({ vehicle, onPurchase, onRestock, onDelete }) {
+export default function VehicleCard({ vehicle, onPurchase, onRestock, onDelete, isAdmin }) {
   const [purchaseQuantity, setPurchaseQuantity] = useState(1);
   const [restockQuantity, setRestockQuantity] = useState(1);
   const [showPurchase, setShowPurchase] = useState(false);
@@ -48,9 +48,9 @@ export default function VehicleCard({ vehicle, onPurchase, onRestock, onDelete }
               disabled={!inStock}
               className={`w-full py-2 rounded-lg font-semibold ${
                 inStock
-                    ? 'bg-neutral-700 text-white hover:bg-neutral-800'
-                    : 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
-               }`}
+                  ? 'bg-neutral-700 text-white hover:bg-neutral-800'
+                  : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+              }`}
             >
               {inStock ? 'Purchase' : 'Out of Stock'}
             </button>
@@ -81,43 +81,47 @@ export default function VehicleCard({ vehicle, onPurchase, onRestock, onDelete }
             </div>
           )}
 
-          <button
-            onClick={() => setShowRestock(!showRestock)}
-            className="w-full py-2 rounded-lg font-semibold border border-neutral-300 text-neutral-900 hover:bg-neutral-100"
-          >
-            Restock
-          </button>
+          {isAdmin && (
+            <>
+              <button
+                onClick={() => setShowRestock(!showRestock)}
+                className="w-full py-2 rounded-lg font-semibold border border-neutral-300 text-neutral-900 hover:bg-neutral-100"
+              >
+                Restock
+              </button>
 
-          {showRestock && (
-            <div className="flex gap-2">
-              <input
-                type="number"
-                min="1"
-                value={restockQuantity}
-                onChange={(e) => setRestockQuantity(parseInt(e.target.value))}
-                className="flex-1 px-2 py-1 border border-gray-300 rounded"
-              />
+              {showRestock && (
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    min="1"
+                    value={restockQuantity}
+                    onChange={(e) => setRestockQuantity(parseInt(e.target.value))}
+                    className="flex-1 px-2 py-1 border border-gray-300 rounded"
+                  />
+                  <button
+                    onClick={handleRestockClick}
+                    className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                  >
+                    Add
+                  </button>
+                  <button
+                    onClick={() => setShowRestock(false)}
+                    className="bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              )}
+
               <button
-                onClick={handleRestockClick}
-                className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                onClick={() => onDelete(vehicle.id)}
+                className="w-full py-2 rounded-lg font-semibold bg-red-600 text-white hover:bg-red-700"
               >
-                Add
+                Delete
               </button>
-              <button
-                onClick={() => setShowRestock(false)}
-                className="bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700"
-              >
-                Cancel
-              </button>
-            </div>
+            </>
           )}
-
-          <button
-            onClick={() => onDelete(vehicle.id)}
-            className="w-full py-2 rounded-lg font-semibold bg-red-600 text-white hover:bg-red-700"
-          >
-            Delete
-          </button>
         </div>
       </div>
     </div>
