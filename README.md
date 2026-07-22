@@ -2,6 +2,10 @@
 
 A full-stack web application for managing a car dealership's inventory. Built with FastAPI (backend), React (frontend), and SQLite database.
 
+
+ # project screenshot 
+ https://drive.google.com/drive/folders/1VaYqy91t-fZWEtF2IhBUKtaWqAMUl22y
+ 
 ## Project Overview
 
 This is a Test-Driven Development (TDD) Kata project that demonstrates best practices in full-stack development including:
