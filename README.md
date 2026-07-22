@@ -12,6 +12,12 @@ This is a Test-Driven Development (TDD) Kata project that demonstrates best prac
 - Modern frontend with React and Tailwind CSS
 - Clean code principles and SOLID design
 
+## User Roles
+
+The app supports two roles: **Admin** and **User**, controlled by an is_admin flag on the account (not selectable at login, for security). Regular users can view, search, and purchase vehicles. Admins can additionally add, restock, and delete vehicles. Role is enforced on the backend via a require_admin dependency (returns 403 if bypassed), and the navbar shows an Admin/User badge to indicate the current role.
+
+**To test as admin**: run python **seed_admin.py** in **backend/** to create admin email : **admin@dealership.com** / admin password **admin123** . Register any other email to test as a regular user. user can not add vehicles , restock vehicles and delete vehicles
+
 ## Features
 
 ### Backend API
