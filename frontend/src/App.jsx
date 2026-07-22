@@ -24,7 +24,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-neutral-900 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-2xl w-full max-w-md p-8">
         {page === 'login' ? (
           <>
@@ -33,7 +33,7 @@ export default function App() {
               Don't have an account?{' '}
               <button
                 onClick={() => setPage('register')}
-                className="text-blue-600 hover:underline font-semibold"
+                className="text-neutral-900 hover:underline font-semibold underline-offset-2"
               >
                 Register
               </button>
@@ -46,7 +46,7 @@ export default function App() {
               Already have an account?{' '}
               <button
                 onClick={() => setPage('login')}
-                className="text-blue-600 hover:underline font-semibold"
+                className="text-neutral-900 hover:underline font-semibold underline-offset-2"
               >
                 Login
               </button>

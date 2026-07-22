@@ -81,8 +81,8 @@ export default function Dashboard({ onLogout }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <nav className="bg-blue-600 text-white p-4">
+    <div className="min-h-screen bg-neutral-50">
+      <nav className="bg-white text-neutral-900 p-4 border-b border-neutral-200">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold">Car Dealership System</h1>
           <button

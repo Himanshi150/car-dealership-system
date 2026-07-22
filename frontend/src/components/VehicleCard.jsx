@@ -21,8 +21,8 @@ export default function VehicleCard({ vehicle, onPurchase, onRestock, onDelete }
   const inStock = vehicle.quantity > 0;
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-4 text-white">
+    <div className="bg-white border border-neutral-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+      <div className="bg-neutral-100 p-4 text-neutral-900 border-b border-neutral-200">
         <h3 className="text-xl font-bold">{vehicle.make} {vehicle.model}</h3>
         <p className="text-sm opacity-90">{vehicle.category}</p>
       </div>
@@ -31,7 +31,7 @@ export default function VehicleCard({ vehicle, onPurchase, onRestock, onDelete }
         <div className="mb-4">
           <div className="flex justify-between mb-2">
             <span className="text-gray-600">Price:</span>
-            <span className="font-semibold text-lg text-blue-600">${vehicle.price.toLocaleString()}</span>
+            <span className="font-semibold text-lg text-neutral-900">${vehicle.price.toLocaleString()}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-600">In Stock:</span>
@@ -48,9 +48,9 @@ export default function VehicleCard({ vehicle, onPurchase, onRestock, onDelete }
               disabled={!inStock}
               className={`w-full py-2 rounded-lg font-semibold ${
                 inStock
-                  ? 'bg-blue-600 text-white hover:bg-blue-700'
-                  : 'bg-gray-400 text-gray-200 cursor-not-allowed'
-              }`}
+                    ? 'bg-neutral-700 text-white hover:bg-neutral-800'
+                    : 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
+               }`}
             >
               {inStock ? 'Purchase' : 'Out of Stock'}
             </button>
@@ -83,7 +83,7 @@ export default function VehicleCard({ vehicle, onPurchase, onRestock, onDelete }
 
           <button
             onClick={() => setShowRestock(!showRestock)}
-            className="w-full py-2 rounded-lg font-semibold bg-purple-600 text-white hover:bg-purple-700"
+            className="w-full py-2 rounded-lg font-semibold border border-neutral-300 text-neutral-900 hover:bg-neutral-100"
           >
             Restock
           </button>
