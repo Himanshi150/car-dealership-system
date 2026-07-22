@@ -5,6 +5,9 @@ This document records all interactions with AI tools (GitHub Copilot) during the
 
 ## Development Sessions
 
+
+## prompt : make a project structure give step by step explanation
+
 ### Session 1: Backend API Implementation
 
 #### Prompt 1: Initial Project Setup
@@ -186,6 +189,12 @@ const handlePurchaseClick = () => {
 - Project structure explanation
 - Test instructions
 - AI usage section
+
+
+**Session: Admin/User Role-Based Access Control**
+
+**Prompt** : "admin page and user page should be different or admin can only visible the restock and delete button because user should not see delete and restock"
+
 
 **Outcome**: Complete project documentation
 
